@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>다카마쓰 여행 일정표 (모바일)</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+  :root{
+    --indigo:#22335C;
+    --indigo-line:#3B4E85;
+    --gold:#B8912B;
+    --lavender:#7A6BB0;
+    --lavender-bg:#F0EDF8;
+    --coral:#C4552F;
+    --coral-bg:#FBEBE3;
+    --paper:#FAF8F3;
+    --card:#FFFFFF;
+    --ink:#22262F;
+    --ink-soft:#6B6F7A;
+    --line:#E4E1D6;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  [hidden]{display:none !important;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Pretendard','Noto Sans KR',sans-serif;
+    padding:0 0 70px;
+    font-size:16px;
+  }
+  .wrap{max-width:600px;margin:0 auto;padding:16px 14px 24px;}
+
+  .quicknav{
+    position:sticky;top:0;z-index:20;
+    display:flex;gap:5px;overflow-x:auto;
+    padding:7px 14px;margin:0 -14px 10px;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .quicknav::-webkit-scrollbar{display:none;}
+  .quicknav a{
+    flex:0 0 auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;
+    background:var(--card);border:1px solid var(--line);
+    color:var(--indigo);
+    padding:6px 10px;border-radius:20px;
+    text-decoration:none;white-space:nowrap;
+  }
+
+  .hero{
+    background:var(--indigo);
+    color:#F4F2EA;
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:10px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero h1{
+    font-family:'Pretendard','Noto Sans KR',sans-serif;
+    font-weight:800;
+    letter-spacing:-0.3px;
+    font-size:18px;
+    margin:0 0 4px;
+  }
+  .hero .sub{font-size:12px;color:#C7CBE0;margin:0 0 9px;}
+  .hero .route{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.3px;
+    color:#F4F2EA;
+    display:flex;flex-wrap:wrap;gap:4px;align-items:center;
+  }
+  .hero .route span.stop{
+    background:rgba(255,255,255,0.1);
+    padding:3px 8px;border-radius:20px;
+  }
+  .hero .route span.arrow{color:var(--gold);}
+
+  .car-note{
+    display:flex;gap:8px;align-items:flex-start;
+    background:var(--lavender-bg);
+    border:1px solid #DAD3EE;
+    border-radius:10px;
+    padding:9px 12px;
+    font-size:12px;
+    line-height:1.45;
+    color:#4A3F72;
+    margin-bottom:12px;
+  }
+
+  .timeline{position:relative;padding-left:0;}
+
+  .day{
+    position:relative;margin-bottom:8px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    scroll-margin-top:52px;
+  }
+  .day-head{
+    display:flex;align-items:center;gap:8px;flex-wrap:nowrap;
+    padding:12px 14px;
+    cursor:pointer;user-select:none;
+    min-height:44px;
+    -webkit-tap-highlight-color:rgba(34,51,92,0.06);
+    transition:background-color .1s;
+  }
+  .day-head:active{background-color:#F3F2EC;}
+  .day-head .num-badge{
+    flex:0 0 auto;
+    width:22px;height:22px;border-radius:50%;
+    background:var(--gold);color:#22262F;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .day-head .titles{flex:1;min-width:0;}
+  .day-head h2{
+    font-family:'Pretendard','Noto Sans KR',sans-serif;
+    font-size:14px;font-weight:800;letter-spacing:-0.2px;margin:0;
+  }
+  .day-head .loc{
+    font-size:11px;color:var(--ink-soft);
+    margin-top:1px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .day-date, .day-loc{outline:none;border-radius:4px;padding:0 2px;margin:0 -2px;}
+  .day-date[contenteditable="true"], .day-loc[contenteditable="true"]{background:#F5F3EA;color:var(--ink);}
+  .day-loc[contenteditable="true"]{white-space:normal;text-overflow:clip;}
+  .edit-head-btn{
+    flex:0 0 auto;border:none;background:none;font-size:13px;
+    padding:4px 6px;opacity:0.55;
+  }
+  .edit-head-btn:active{opacity:1;}
+  .day-head .chevron{
+    flex:0 0 auto;
+    width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:var(--indigo);background:#EFEDE3;
+    transition:transform .2s;
+  }
+  .day.collapsed .day-head .chevron{transform:rotate(-90deg);}
+
+  .card{
+    background:transparent;
+    border:none;
+    border-top:1px solid var(--line);
+    border-radius:0;
+    padding:10px 14px 12px;
+  }
+  .day.collapsed .card{display:none;}
+
+  .flight{
+    display:flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    background:#F4F1E6;
+    border:1px solid #E6E1CE;
+    border-radius:8px;
+    padding:7px 10px;
+    margin-bottom:6px;
+    color:#5A4E1F;
+  }
+  .flight .badge{
+    background:var(--gold);color:#2C2308;
+    padding:1px 6px;border-radius:5px;font-weight:700;
+  }
+  .flight .path{flex:1;color:#3A3120;}
+  .flight .time{font-weight:700;color:#22262F;}
+
+  .hotel-block, .car-block{
+    display:flex;gap:8px;align-items:center;
+    border-radius:8px;padding:7px 10px;margin-bottom:6px;
+    font-size:11.5px;
+  }
+  .hotel-block{background:var(--lavender-bg);border:1px solid #DAD3EE;}
+  .car-block{background:#EAF3E4;border:1px solid #CFE5C3;}
+  .hotel-block .tag, .car-block .tag{
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+    padding:1px 6px;border-radius:5px;white-space:nowrap;
+  }
+  .hotel-block .tag{background:var(--lavender);color:#fff;}
+  .car-block .tag{background:#4E7A3A;color:#fff;}
+  .hotel-block .info, .car-block .info{min-width:0;flex:1;}
+  .hotel-block .info b, .car-block .info b{display:block;font-size:12px;color:#22262F;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .hotel-block .info span, .car-block .info span{color:#5A5470;font-size:11px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .item-map-link{
+    flex-shrink:0;font-size:15px;text-decoration:none;
+    padding:2px 5px;border-radius:6px;align-self:center;
+  }
+
+  .list{list-style:none;margin:0;padding:0;}
+  .list li.item-row{
+    position:relative;
+    padding:5px 0;border-bottom:1px solid var(--line);
+  }
+  .list li.item-row:last-child{border-bottom:none;}
+  .item-main{display:flex;align-items:center;gap:6px;}
+  .drag-handle{
+    flex-shrink:0;border:none;background:none;color:#C7C4B7;
+    font-size:16px;padding:4px 4px;cursor:grab;touch-action:none;
+    line-height:1;
+  }
+  .item-row.dragging, .todo-list li.dragging{
+    background:#F5F3EA;border-radius:8px;box-shadow:0 4px 14px rgba(34,38,47,0.15);
+  }
+  li.item-row, .todo-list li{touch-action:pan-y;}
+  .list .t{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    color:var(--ink-soft);min-width:42px;max-width:60px;flex-shrink:0;
+    outline:none;border-radius:6px;padding:4px;
+  }
+  .list .t:focus{background:#F5F3EA;color:var(--ink);}
+  .list .txt{
+    flex:1;min-width:0;outline:none;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;line-height:1.3;
+    border-radius:6px;padding:4px 6px;margin:0 -6px;
+  }
+  .list .txt:focus{background:#F5F3EA;}
+  .map-badge{
+    flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
+    text-decoration:none;font-size:15px;
+    padding:3px 5px;border-radius:6px;
+  }
+  .cost-badge{
+    flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    color:#8A6D1E;background:#F7EFD8;border:1px solid #E9D9A8;
+    border-radius:12px;padding:3px 8px;white-space:nowrap;
+  }
+  .more-btn{
+    flex-shrink:0;border:none;background:none;color:var(--ink-soft);
+    font-size:18px;line-height:1;padding:4px 8px;min-width:32px;
+  }
+  .item-more-row{
+    position:absolute;top:calc(100% - 2px);right:8px;z-index:30;
+    display:flex;flex-direction:column;gap:1px;
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 6px 18px rgba(34,38,47,0.14);
+    padding:4px;min-width:170px;
+  }
+  .item-more-row[hidden]{display:none;}
+  .item-more-row button{
+    border:none;background:none;color:var(--ink);text-align:left;
+    font-size:13px;border-radius:7px;padding:9px 10px;min-height:38px;
+    white-space:nowrap;
+  }
+  .item-more-row button:active{background:var(--paper);}
+  .item-more-row button:disabled{opacity:0.35;}
+  .item-more-row .del{color:var(--coral);}
+  .item-link-row{margin-top:6px;}
+  .item-link-row .link-input{
+    width:100%;box-sizing:border-box;font-size:13px;color:var(--ink);
+    outline:none;border:1px dashed var(--line);border-radius:8px;
+    padding:8px 10px;background:#FAFAF6;
+  }
+  .item-link-row .link-input:focus{background:#F5F3EA;border-style:solid;}
+
+  .item-cost-row{margin-top:6px;display:flex;gap:6px;}
+  .item-cost-row .cost-input{
+    flex:1;box-sizing:border-box;font-size:14px;color:var(--ink);
+    outline:none;border:1px dashed var(--line);border-radius:8px;
+    padding:8px 10px;background:#FAFAF6;font-family:'JetBrains Mono',monospace;
+  }
+  .item-cost-row .cost-input:focus{background:#F5F3EA;border-style:solid;}
+  .item-cost-row .cost-cur{
+    border:1px dashed var(--line);background:#FAFAF6;color:var(--ink-soft);
+    border-radius:8px;padding:8px 10px;font-size:12.5px;white-space:nowrap;
+  }
+  .hotel-cost-btn, .car-cost-btn, .flight-cost-btn{
+    flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    border:none;border-radius:12px;padding:3px 8px;white-space:nowrap;
+    background:rgba(255,255,255,0.6);color:#4A3F72;
+  }
+  .flight-cost-btn{background:rgba(0,0,0,0.06);color:#5A4E1F;margin-left:auto;}
+  .hotel-cost-row, .flight-cost-row, .car-cost-row{margin-top:6px;padding:0 2px;display:flex;gap:6px;}
+  .hotel-cost-row input[type=number], .flight-cost-row input[type=number], .car-cost-row input[type=number]{
+    flex:1;box-sizing:border-box;font-size:13px;color:var(--ink);
+    outline:none;border:1px dashed var(--line);border-radius:8px;
+    padding:7px 9px;background:#FAFAF6;font-family:'JetBrains Mono',monospace;
+  }
+  .hotel-cost-cur, .flight-cost-cur, .car-cost-cur{
+    border:1px dashed var(--line);background:#FAFAF6;color:var(--ink-soft);
+    border-radius:8px;padding:7px 10px;font-size:12.5px;
+  }
+  .hotel-equiv{
+    margin-top:2px;font-size:10.5px;color:#8A6D1E;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  .cost-section-label{
+    font-size:11px;font-weight:800;color:var(--indigo);text-transform:uppercase;
+    letter-spacing:0.4px;margin:0 0 6px;
+  }
+
+  .cost-grand-box{
+    display:flex;justify-content:space-between;align-items:baseline;
+    background:var(--indigo);color:#fff;
+    border-radius:10px;padding:12px 14px;margin-bottom:12px;
+  }
+  .cost-grand-label{font-size:12px;font-weight:700;opacity:0.85;}
+  .cost-grand-amt{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;}
+
+  .cost-cat-block{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+  .cost-cat-head{
+    width:100%;display:flex;align-items:center;gap:8px;
+    border:none;background:var(--card);padding:10px 12px;text-align:left;
+  }
+  .cost-cat-title{font-size:13px;font-weight:700;color:var(--ink);flex:1;}
+  .cost-cat-amt{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;color:var(--ink);}
+  .cost-cat-chevron{font-size:11px;color:var(--ink-soft);transition:transform .15s;}
+  .cost-cat-chevron.open{transform:rotate(180deg);}
+  .cost-cat-detail{padding:0 12px 10px;background:#FAFAF7;}
+
+  .cost-empty-day{color:var(--ink-soft);font-size:11.5px;padding:8px 2px;}
+
+  .cost-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .cost-table td{padding:5px 2px;border-bottom:1px dotted var(--line);vertical-align:top;}
+  .cost-table tr:last-child td{border-bottom:none;}
+  .cost-table .c-label{color:var(--ink);}
+  .cost-table .c-amt{text-align:right;font-family:'JetBrains Mono',monospace;white-space:nowrap;padding-right:6px;}
+  .cost-table .c-x{width:20px;text-align:right;}
+  .cost-table .del-extra{border:none;background:none;color:#BDBAAE;font-size:13px;padding:2px 4px;}
+  .cost-table .c-equiv-row td{color:var(--ink-soft);font-size:10.5px;font-style:italic;border-bottom-style:dotted;}
+
+  .cost-add-section{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);}
+  .cost-add-form{display:flex;flex-direction:column;gap:6px;}
+  .cost-add-form input,
+  .cost-add-form select,
+  .cost-add-form button{
+    height:38px;box-sizing:border-box;font-size:12.5px;
+    border:1px dashed var(--line);border-radius:8px;background:#FAFAF6;color:var(--ink);
+  }
+  .cost-add-row-1{display:grid;grid-template-columns:1fr 72px;gap:6px;}
+  .cost-add-form .extra-day, .cost-add-form .extra-type{padding:0 6px;color:var(--ink-soft);}
+  .cost-add-form .extra-label{width:100%;padding:0 10px;}
+  .cost-add-row-2{display:grid;grid-template-columns:36px 1fr 56px;gap:6px;}
+  .cost-add-row-2 .extra-cur{color:var(--ink-soft);font-weight:700;}
+  .cost-add-row-2 .extra-amount{
+    font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;
+    text-align:right;padding:0 8px;
+  }
+  .cost-add-row-2 .extra-add-btn{
+    border:1px solid var(--indigo-line);background:var(--indigo);color:#fff;font-weight:700;
+  }
+
+  .add-row{display:flex;gap:6px;margin-top:8px;}
+  .add-row input[type=text]{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;width:56px;
+    border:1px solid var(--line);border-radius:7px;padding:7px 6px;
+  }
+  .add-row input[type=text].name{
+    font-family:'Noto Sans KR',sans-serif;font-size:13.5px;flex:1;width:auto;
+  }
+  .add-row button{
+    border:1px solid var(--indigo-line);background:var(--indigo);color:#fff;
+    border-radius:7px;padding:7px 14px;font-size:12.5px;min-height:36px;
+  }
+
+  .day-todo{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);}
+  .day-todo-title{
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:11px;font-weight:700;color:var(--indigo);
+    text-transform:uppercase;letter-spacing:0.4px;
+    margin-bottom:4px;
+  }
+  .day-todo-list{list-style:none;margin:0;padding:0;}
+  .day-todo-list li{
+    display:flex;align-items:flex-start;gap:8px;
+    padding:4px 0;border-bottom:1px solid var(--line);
+  }
+  .day-todo-list li:last-child{border-bottom:none;}
+  .day-todo-list input[type=checkbox]{
+    margin-top:2px;width:17px;height:17px;accent-color:var(--indigo);flex-shrink:0;
+  }
+  .day-todo-list .dtxt{
+    flex:1;outline:none;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;line-height:1.3;
+    border-radius:6px;padding:2px 6px;margin:-2px -6px;
+  }
+  .day-todo-list .dtxt:focus{background:#F5F3EA;}
+  .day-todo-list li.done .dtxt{color:var(--ink-soft);text-decoration:line-through;}
+  .day-todo-list .del{
+    border:none;background:none;color:#BDBAAE;font-size:15px;padding:2px 6px;min-width:28px;
+  }
+  .day-todo-add{display:flex;gap:6px;margin-top:6px;}
+  .day-todo-add input[type=text]{
+    font-family:'Noto Sans KR',sans-serif;font-size:13.5px;flex:1;
+    border:1px solid var(--line);border-radius:7px;padding:7px 9px;
+  }
+  .day-todo-add button{
+    border:1px solid var(--indigo-line);background:var(--indigo);color:#fff;
+    border-radius:7px;padding:7px 14px;font-size:12.5px;min-height:36px;
+  }
+
+  .save{
+    position:fixed;bottom:18px;right:24px;
+    font-size:11px;color:var(--ink-soft);
+    background:var(--card);border:1px solid var(--line);
+    padding:6px 12px;border-radius:20px;opacity:0;transition:opacity .3s;
+  }
+  .save.show{opacity:1;}
+
+  .todo-section{margin-bottom:14px;}
+  .todo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;cursor:pointer;user-select:none;}
+  .todo-head .left{display:flex;align-items:center;gap:6px;}
+  .todo-head h2{font-family:'Pretendard','Noto Sans KR',sans-serif;font-size:14px;font-weight:800;letter-spacing:-0.2px;margin:0;}
+  .todo-chevron{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:18px;height:18px;color:var(--ink-soft);
+    transition:transform .2s;font-size:11px;
+  }
+  .todo-chevron.collapsed{transform:rotate(-90deg);}
+  .todo-progress{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);}
+  .todo-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;}
+  .todo-card.collapsed{display:none;}
+  .todo-cat-head{margin:10px 0 4px;}
+  .todo-cat-head:first-child{margin-top:0;}
+  .todo-cat{
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:11px;font-weight:700;color:var(--indigo);text-transform:uppercase;letter-spacing:0.4px;
+  }
+  .todo-list{list-style:none;margin:0;padding:0;}
+  .todo-list li{
+    display:flex;align-items:flex-start;gap:8px;
+    padding:5px 0;border-bottom:1px solid var(--line);
+  }
+  .todo-list li:last-child{border-bottom:none;}
+  .todo-list input[type=checkbox]{
+    margin-top:2px;width:17px;height:17px;accent-color:var(--indigo);flex-shrink:0;
+  }
+  .todo-list .txt2{
+    flex:1;outline:none;font-family:'Noto Sans KR',sans-serif;font-size:13.5px;line-height:1.3;
+    border-radius:6px;padding:2px 6px;margin:-2px -6px;
+  }
+  .todo-list .txt2:focus{background:#F5F3EA;}
+  .todo-list li.done .txt2{color:var(--ink-soft);text-decoration:line-through;}
+  .todo-list .del{
+    border:none;background:none;color:#BDBAAE;font-size:15px;padding:2px 6px;min-width:28px;
+  }
+  .todo-add-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);}
+  .todo-add-row select{
+    font-family:'Noto Sans KR',sans-serif;font-size:13px;
+    border:1px solid var(--line);border-radius:8px;padding:8px;
+    flex:1 1 100%;
+  }
+  .todo-add-row input[type=text]{
+    font-family:'Noto Sans KR',sans-serif;font-size:14px;flex:1;
+    border:1px solid var(--line);border-radius:8px;padding:9px 10px;
+  }
+  .todo-add-row button{
+    border:1px solid var(--indigo-line);background:var(--indigo);color:#fff;
+    border-radius:8px;padding:9px 16px;font-size:13px;min-height:40px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="quicknav" id="quicknav"></div>
+
+  <div class="hero">
+    <h1>다카마쓰 여행</h1>
+    <p class="sub">날짜/항공편 정보 입력 예정 · 2박 3일</p>
+    <div class="route" id="hero-route"></div>
+  </div>
+
+  <!-- 렌터카/이동수단 메모가 필요하면 아래처럼 .car-note 블록을 추가하세요.
+  <div class="car-note">🚗 <div><b>이동 메모 제목</b> — 내용을 여기에 작성.</div></div>
+  -->
+
+
+  <div class="todo-section">
+    <div class="todo-head" id="todo-head">
+      <div class="left">
+        <span class="todo-chevron" id="todo-chevron">▾</span>
+        <h2>✅ 체크리스트</h2>
+      </div>
+      <span class="todo-progress" id="todo-progress"></span>
+    </div>
+    <div class="todo-card" id="todo-card"></div>
+  </div>
+
+  <div class="todo-section">
+    <div class="todo-head" id="cost-head">
+      <div class="left">
+        <span class="todo-chevron" id="cost-chevron">▾</span>
+        <h2>💰 비용 정리</h2>
+      </div>
+      <span class="todo-progress" id="cost-total"></span>
+    </div>
+    <div class="todo-card" id="cost-card"></div>
+  </div>
+
+  <div class="timeline" id="timeline"></div>
+</div>
+
+<div class="save" id="save">저장됨</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+// TODO: 다카마쓰용 새 Firebase 프로젝트를 만든 뒤 아래 값을 채워주세요.
+// (콘솔 > 프로젝트 설정 > 일반 > 내 앱 > SDK 설정 및 구성)
+// 비워둔 상태에서는 initializeApp이 실패해서 자동으로 로컬 저장(window.storage
+// 또는 localStorage)으로 대체되므로, 지금 당장은 정상적으로 동작합니다.
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
+};
+
+let db = null;
+try {
+  if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+  }
+} catch(e){ console.error('Firebase init failed, falling back to local storage', e); }
+let todoCategories = ["서류/신분", "교통", "통신/결제", "숙소/매너", "짐/기타"];
+let todoCollapsed = true;
+
+let todos = [
+  {cat:"서류/신분", t:"여권 유효기간 확인 (입국일 기준 6개월 이상)", done:false},
+  {cat:"서류/신분", t:"Visit Japan Web 사전 등록 (입국심사/세관 QR)", done:false},
+  {cat:"서류/신분", t:"항공편 온라인 체크인 (출발 24시간 전, 여권정보/좌석)", done:false},
+  {cat:"교통", t:"공항 ↔ 다카마쓰 시내 이동수단(리무진버스/기차) 확인", done:false},
+  {cat:"교통", t:"시내 이동수단(전차/버스/렌터카 등) 결정", done:false},
+  {cat:"통신/결제", t:"eSIM 또는 포켓와이파이 예약", done:false},
+  {cat:"통신/결제", t:"엔화 환전 또는 트래블카드 준비", done:false},
+  {cat:"통신/결제", t:"해외여행자보험 가입", done:false},
+  {cat:"숙소/매너", t:"호텔별 체크인/체크아웃 시간 메모", done:false},
+  {cat:"숙소/매너", t:"조식/석식 포함 여부 확인", done:false},
+  {cat:"짐/기타", t:"우천/날씨 대비 겉옷·우산 준비", done:false},
+  {cat:"짐/기타", t:"여행자 카드/신용카드 해외결제 한도 확인", done:false}
+];
+
+const todoCard = document.getElementById('todo-card');
+const todoProgress = document.getElementById('todo-progress');
+const todoHead = document.getElementById('todo-head');
+const todoChevron = document.getElementById('todo-chevron');
+
+let todosLoaded = false; // Firestore 실시간 감지의 '첫 응답'이 오기 전까지는 저장을 막음
+
+async function waitUntilLoaded(flagGetter, timeoutMs=8000){
+  const start = Date.now();
+  while(!flagGetter()){
+    if(Date.now() - start > timeoutMs) return false; // 서버 응답이 비정상적으로 오래 걸리는 경우 포기
+    await new Promise(r=>setTimeout(r, 80));
+  }
+  return true;
+}
+
+async function persistTodos(){
+  if(db && !todosLoaded){
+    // 아직 서버의 최신 데이터를 확인받기 전입니다. 지금 바로 저장하면
+    // 곧이어 도착할 서버 데이터가 이 저장 내용을 덮어써버릴 수 있으므로,
+    // 최신 데이터를 확인받을 때까지 짧게 기다렸다가 저장합니다.
+    // (버튼을 누른 시점의 값은 그대로 유지되므로 입력한 내용이 씹히지 않습니다.)
+    const ok = await waitUntilLoaded(()=>todosLoaded);
+    if(!ok){ console.warn('체크리스트 초기 데이터 확인 시간 초과 - 저장을 건너뜁니다.'); return; }
+  }
+  try{
+    await storageAPI.set('itinerary_todos', JSON.stringify({
+      categories: todoCategories,
+      items: todos,
+      collapsed: todoCollapsed
+    }), false);
+    flashSave();
+  }catch(e){ console.error('todo save failed', e); }
+}
+
+// 이 함수는 더 이상 '한 번 읽기'를 하지 않습니다. Firestore 사용 시에는
+// setupRealtimeSync()의 실시간 감지가 대신 초기 데이터를 채워줍니다.
+// (한 번 읽기 + 실시간 감지가 따로 있으면, 그 사이 타이밍에 저장이 발생해
+// 기본값으로 덮어써지는 문제가 있었습니다.)
+async function loadTodos(){
+  if(db) return; // Firestore를 쓰는 경우 setupRealtimeSync에서 처리
+  try{
+    const res = await storageAPI.get('itinerary_todos', false);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      if(parsed && Array.isArray(parsed.items) && Array.isArray(parsed.categories)){
+        todos = parsed.items;
+        todoCategories = parsed.categories;
+      }
+    }
+  }catch(e){ /* no saved todos yet, use defaults */ }
+  todosLoaded = true;
+}
+
+function applyCollapsedState(){
+  todoCard.classList.toggle('collapsed', todoCollapsed);
+  todoChevron.classList.toggle('collapsed', todoCollapsed);
+}
+
+todoHead.addEventListener('click', ()=>{
+  todoCollapsed = !todoCollapsed;
+  applyCollapsedState();
+  persistTodos();
+});
+
+function renderTodos(){
+  const done = todos.filter(x=>x.done).length;
+  todoProgress.textContent = `${done} / ${todos.length} 완료`;
+  applyCollapsedState();
+
+  let html = '';
+  todoCategories.forEach((cat)=>{
+    const items = todos.map((x,i)=>({...x,idx:i})).filter(x=>x.cat===cat);
+    if(!items.length) return;
+    html += `<div class="todo-cat-head"><span class="todo-cat">${cat}</span></div><ul class="todo-list" data-cat="${cat}">`;
+    items.forEach(it=>{
+      html += `<li class="${it.done?'done':''}" data-idx="${it.idx}">
+        <button class="drag-handle" title="드래그하여 순서 변경">⠿</button>
+        <input type="checkbox" data-idx="${it.idx}" ${it.done?'checked':''}>
+        <span class="txt2" contenteditable="true" data-idx="${it.idx}">${it.t}</span>
+        <button class="del" data-idx="${it.idx}" aria-label="삭제">✕</button>
+      </li>`;
+    });
+    html += `</ul>`;
+  });
+
+  html += `<div class="todo-add-row">
+    <select id="todo-cat-select">${todoCategories.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
+    <input type="text" id="todo-new-input" placeholder="준비할 항목 추가...">
+    <button id="todo-add-btn">추가</button>
+  </div>`;
+
+  todoCard.innerHTML = html;
+
+  todoCard.querySelectorAll('input[type=checkbox]').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const i = +e.target.dataset.idx;
+      todos[i].done = e.target.checked;
+      persistTodos();
+      renderTodos();
+    });
+  });
+  todoCard.querySelectorAll('.txt2').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const i = +e.target.dataset.idx;
+      todos[i].t = e.target.textContent.trim();
+      persistTodos();
+    });
+  });
+  todoCard.querySelectorAll('.del').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const i = +e.target.dataset.idx;
+      todos.splice(i,1);
+      persistTodos();
+      renderTodos();
+    });
+  });
+  todoCard.querySelectorAll('.todo-list').forEach(listEl=>{
+    setupDragReorder(listEl, {
+      itemSelector: 'li',
+      handleSelector: '.drag-handle',
+      getIndex: liEl => +liEl.dataset.idx,
+      getArray: () => todos,
+      afterReorder: () => { persistTodos(); renderTodos(); }
+    });
+  });
+  function addChecklistItem(){
+    const sel = document.getElementById('todo-cat-select');
+    const input = document.getElementById('todo-new-input');
+    if(input.value.trim()){
+      todos.push({cat: sel.value, t: input.value.trim(), done:false});
+      persistTodos();
+      renderTodos();
+    }
+  }
+  const addBtn = document.getElementById('todo-add-btn');
+  if(addBtn){
+    addBtn.addEventListener('click', addChecklistItem);
+  }
+  const newTodoInput = document.getElementById('todo-new-input');
+  if(newTodoInput){
+    newTodoInput.addEventListener('keydown', e=>{
+      if(e.key === 'Enter'){ e.preventDefault(); addChecklistItem(); }
+    });
+  }
+}
+
+let costCollapsed = true;
+const costCard = document.getElementById('cost-card');
+const costTotalEl = document.getElementById('cost-total');
+const costHead = document.getElementById('cost-head');
+const costChevron = document.getElementById('cost-chevron');
+
+function formatCost(n, cur){
+  const num = Number(n);
+  if(isNaN(num)) return '';
+  const symbol = cur === 'KRW' ? '₩' : '¥';
+  return symbol + num.toLocaleString();
+}
+
+async function fetchJpyToKrw(jpyAmount){
+  const today = new Date().toISOString().slice(0,10); // 입력일(오늘) 기준
+  try{
+    const res = await fetch(`https://api.frankfurter.app/${today}?from=JPY&to=KRW`);
+    const data = await res.json();
+    const rate = data && data.rates && data.rates.KRW;
+    if(!rate) return null;
+    return { krw: Math.round(jpyAmount * rate), date: today };
+  }catch(e){
+    console.error('환율 조회 실패', e);
+    return null;
+  }
+}
+
+function applyCostCollapsedState(){
+  costCard.classList.toggle('collapsed', costCollapsed);
+  costChevron.classList.toggle('collapsed', costCollapsed);
+}
+
+costHead.addEventListener('click', ()=>{
+  costCollapsed = !costCollapsed;
+  applyCostCollapsedState();
+});
+
+function calcDayCost(day){
+  const cats = { flight:{jpy:0,krw:0}, hotel:{jpy:0,krw:0}, car:{jpy:0,krw:0}, item:{jpy:0,krw:0}, shopping:{jpy:0,krw:0}, extra:{jpy:0,krw:0} };
+  (day.flights||[]).forEach(f=>{
+    if(f.cost != null && f.cost !== ''){
+      const n = Number(f.cost) || 0;
+      if((f.currency||'KRW') === 'JPY') cats.flight.jpy += n; else cats.flight.krw += n;
+    }
+  });
+  if(day.hotel && day.hotel.cost != null && day.hotel.cost !== ''){
+    const n = Number(day.hotel.cost) || 0;
+    if((day.hotel.currency||'KRW') === 'JPY') cats.hotel.jpy += n; else cats.hotel.krw += n;
+  }
+  if(day.car && day.car.cost != null && day.car.cost !== ''){
+    const n = Number(day.car.cost) || 0;
+    if((day.car.currency||'JPY') === 'KRW') cats.car.krw += n; else cats.car.jpy += n;
+  }
+  (day.items||[]).forEach(it=>{
+    if(it.cost != null && it.cost !== ''){
+      const n = Number(it.cost) || 0;
+      if((it.currency||'JPY') === 'KRW') cats.item.krw += n; else cats.item.jpy += n;
+    }
+  });
+  (day.shoppingCosts||[]).forEach(sc=>{
+    const n = Number(sc.cost) || 0;
+    if((sc.currency||'JPY') === 'KRW') cats.shopping.krw += n; else cats.shopping.jpy += n;
+  });
+  (day.extraCosts||[]).forEach(ec=>{
+    const n = Number(ec.cost) || 0;
+    if((ec.currency||'JPY') === 'KRW') cats.extra.krw += n; else cats.extra.jpy += n;
+  });
+  const jpy = cats.flight.jpy + cats.hotel.jpy + cats.car.jpy + cats.item.jpy + cats.shopping.jpy + cats.extra.jpy;
+  const krw = cats.flight.krw + cats.hotel.krw + cats.car.krw + cats.item.krw + cats.shopping.krw + cats.extra.krw;
+  return {cats, jpy, krw};
+}
+
+const COST_CAT_META = [
+  {key:'flight', icon:'✈️', label:'항공권'},
+  {key:'hotel', icon:'🏨', label:'숙소'},
+  {key:'car', icon:'🚗', label:'렌터카'},
+  {key:'item', icon:'🎫', label:'일정·활동'},
+  {key:'shopping', icon:'🛍️', label:'쇼핑'},
+  {key:'extra', icon:'🧾', label:'기타 지출'}
+];
+
+let costCatOpen = {}; // 카테고리별 펼침 상태 (기본 전부 접힘)
+
+function renderCostSummary(){
+  applyCostCollapsedState();
+  let totalJpy = 0, totalKrw = 0;
+  const catGrand = { flight:{jpy:0,krw:0}, hotel:{jpy:0,krw:0}, car:{jpy:0,krw:0}, item:{jpy:0,krw:0}, shopping:{jpy:0,krw:0}, extra:{jpy:0,krw:0} };
+  const catLines = { flight:[], hotel:[], car:[], item:[], shopping:[], extra:[] };
+
+  days.forEach((day, di)=>{
+    const {cats, jpy, krw} = calcDayCost(day);
+    totalJpy += jpy; totalKrw += krw;
+    COST_CAT_META.forEach(m=>{ catGrand[m.key].jpy += cats[m.key].jpy; catGrand[m.key].krw += cats[m.key].krw; });
+
+    (day.flights||[]).forEach(f=>{
+      if(f.cost == null || f.cost === '') return;
+      catLines.flight.push(`<tr><td class="c-label">Day${day.num} · ${f.badge}</td><td class="c-amt">${formatCost(f.cost, f.currency||'KRW')}</td><td class="c-x"></td></tr>`);
+    });
+    if(day.hotel && day.hotel.cost != null && day.hotel.cost !== ''){
+      const hCur = day.hotel.currency || 'KRW';
+      catLines.hotel.push(`<tr><td class="c-label">Day${day.num} · ${day.hotel.name}</td><td class="c-amt">${formatCost(day.hotel.cost, hCur)}</td><td class="c-x"></td></tr>`);
+      if(hCur === 'JPY' && day.hotel.krwEquiv != null){
+        catLines.hotel.push(`<tr class="c-equiv-row"><td class="c-label">　└ 원화 환산 (참고, ${day.hotel.krwEquivDate||''})</td><td class="c-amt">${formatCost(day.hotel.krwEquiv,'KRW')}</td><td class="c-x"></td></tr>`);
+      }
+    }
+    if(day.car && day.car.cost != null && day.car.cost !== ''){
+      catLines.car.push(`<tr><td class="c-label">Day${day.num} · ${day.car.co} (${day.car.event})</td><td class="c-amt">${formatCost(day.car.cost, day.car.currency||'JPY')}</td><td class="c-x"></td></tr>`);
+    }
+    (day.items||[]).forEach((it)=>{
+      if(it.cost == null || it.cost === '') return;
+      catLines.item.push(`<tr><td class="c-label">Day${day.num} · ${it.x}</td><td class="c-amt">${formatCost(it.cost, it.currency||'JPY')}</td><td class="c-x"></td></tr>`);
+    });
+    (day.shoppingCosts||[]).forEach((sc, si)=>{
+      catLines.shopping.push(`<tr><td class="c-label">Day${day.num} · ${sc.label}</td><td class="c-amt">${formatCost(sc.cost, sc.currency||'JPY')}</td><td class="c-x"><button class="del-shopping" data-day="${di}" data-idx="${si}">✕</button></td></tr>`);
+    });
+    (day.extraCosts||[]).forEach((ec, ei)=>{
+      catLines.extra.push(`<tr><td class="c-label">Day${day.num} · ${ec.label}</td><td class="c-amt">${formatCost(ec.cost, ec.currency||'JPY')}</td><td class="c-x"><button class="del-extra" data-day="${di}" data-idx="${ei}">✕</button></td></tr>`);
+    });
+  });
+
+  const totalParts = [];
+  if(totalJpy) totalParts.push(formatCost(totalJpy,'JPY'));
+  if(totalKrw) totalParts.push(formatCost(totalKrw,'KRW'));
+
+  let catBlocksHtml = '';
+  COST_CAT_META.forEach(m=>{
+    const c = catGrand[m.key];
+    const hasAmount = c.jpy || c.krw;
+    const lines = catLines[m.key];
+    if(!hasAmount && !lines.length) return; // 해당 카테고리에 아무 내역 없으면 표시 안 함
+    const parts = [];
+    if(c.jpy) parts.push(formatCost(c.jpy,'JPY'));
+    if(c.krw) parts.push(formatCost(c.krw,'KRW'));
+    const isOpen = !!costCatOpen[m.key];
+    catBlocksHtml += `<div class="cost-cat-block">
+      <button class="cost-cat-head" data-cat="${m.key}">
+        <span class="cost-cat-title">${m.icon} ${m.label}</span>
+        <span class="cost-cat-amt">${parts.join(' + ') || '—'}</span>
+        <span class="cost-cat-chevron ${isOpen?'open':''}">▾</span>
+      </button>
+      <div class="cost-cat-detail" ${isOpen?'':'hidden'}>
+        ${lines.length ? `<table class="cost-table">${lines.join('')}</table>` : `<div class="cost-empty-day">내역 없음</div>`}
+      </div>
+    </div>`;
+  });
+
+  const dayOptions = days.map(d => `<option value="${d.num-1}">Day${d.num} · ${d.date}</option>`).join('');
+
+  costCard.innerHTML = `
+    <div class="cost-grand-box">
+      <span class="cost-grand-label">전체 합계</span>
+      <span class="cost-grand-amt">${totalParts.join(' + ') || '—'}</span>
+    </div>
+    ${catBlocksHtml || `<div class="cost-empty-day">아직 입력된 비용이 없어요.</div>`}
+    <div class="cost-add-section">
+      <div class="cost-section-label">🧾 지출 추가</div>
+      <div class="cost-add-form">
+        <div class="cost-add-row-1">
+          <select class="extra-day">${dayOptions}</select>
+          <select class="extra-type">
+            <option value="extra">기타</option>
+            <option value="shopping">쇼핑</option>
+          </select>
+        </div>
+        <input type="text" class="extra-label" placeholder="항목명 (예: 간식, 기념품)">
+        <div class="cost-add-row-2">
+          <button class="extra-cur" data-cur="JPY">¥</button>
+          <input type="number" class="extra-amount" inputmode="numeric" placeholder="금액">
+          <button class="extra-add-btn">추가</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  costCard.querySelectorAll('.cost-cat-head').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const cat = e.currentTarget.dataset.cat;
+      costCatOpen[cat] = !costCatOpen[cat];
+      renderCostSummary();
+    });
+  });
+  costCard.querySelectorAll('.del-extra').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.currentTarget.dataset.day, idx = +e.currentTarget.dataset.idx;
+      days[d].extraCosts.splice(idx,1);
+      persist();
+      renderCostSummary();
+    });
+  });
+  costCard.querySelectorAll('.del-shopping').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.currentTarget.dataset.day, idx = +e.currentTarget.dataset.idx;
+      days[d].shoppingCosts.splice(idx,1);
+      persist();
+      renderCostSummary();
+    });
+  });
+  const curBtn = costCard.querySelector('.extra-cur');
+  if(curBtn){
+    curBtn.addEventListener('mousedown', e=>{ e.preventDefault(); });
+    curBtn.addEventListener('click', e=>{
+      const btn = e.currentTarget;
+      const next = btn.dataset.cur === 'JPY' ? 'KRW' : 'JPY';
+      btn.dataset.cur = next;
+      btn.textContent = next === 'JPY' ? '¥' : '₩';
+    });
+  }
+  function addExtra(){
+    const dayIn = costCard.querySelector('.extra-day');
+    const typeIn = costCard.querySelector('.extra-type');
+    const labelIn = costCard.querySelector('.extra-label');
+    const amountIn = costCard.querySelector('.extra-amount');
+    const curBtnEl = costCard.querySelector('.extra-cur');
+    const d = +dayIn.value;
+    const type = typeIn.value; // 'extra' | 'shopping'
+    const label = labelIn.value.trim();
+    const amount = amountIn.value.trim();
+    if(label && amount){
+      const entry = {label, cost: Number(amount), currency: curBtnEl.dataset.cur};
+      if(type === 'shopping'){
+        if(!days[d].shoppingCosts) days[d].shoppingCosts = [];
+        days[d].shoppingCosts.push(entry);
+        costCatOpen.shopping = true;
+      } else {
+        if(!days[d].extraCosts) days[d].extraCosts = [];
+        days[d].extraCosts.push(entry);
+        costCatOpen.extra = true;
+      }
+      persist();
+      renderCostSummary();
+    }
+  }
+  const addBtn = costCard.querySelector('.extra-add-btn');
+  if(addBtn) addBtn.addEventListener('click', addExtra);
+  costCard.querySelectorAll('.extra-label, .extra-amount').forEach(el=>{
+    el.addEventListener('keydown', e=>{
+      if(e.key === 'Enter'){ e.preventDefault(); addExtra(); }
+    });
+  });
+
+  costTotalEl.textContent = totalParts.join(' + ');
+}
+
+const days = [
+  {
+    num:1, date:"Day 1 날짜 입력", loc:"출발지 → 다카마쓰",
+    flights:[],
+    items:[
+      {t:"-", x:"✏️ 이 칸을 눌러 일정을 입력하세요 (시간/일정명 모두 수정 가능)"},
+      {t:"-", x:"✏️ 항공편·숙소는 아래 add-row로 넣거나, 확정되면 다시 요청해서 flights/hotel 정보로 채워넣을 수 있어요"}
+    ],
+    dayTodos:[],
+    places:[],
+    extraCosts:[], shoppingCosts:[]
+  },
+  {
+    num:2, date:"Day 2 날짜 입력", loc:"다카마쓰 시내 관광",
+    flights:[],
+    items:[
+      {t:"-", x:"✏️ 이 날 일정을 입력하세요 (리츠린 공원, 우동 투어 등)"}
+    ],
+    dayTodos:[],
+    places:[],
+    extraCosts:[], shoppingCosts:[]
+  },
+  {
+    num:3, date:"Day 3 날짜 입력", loc:"다카마쓰 → 출발지",
+    flights:[],
+    items:[
+      {t:"-", x:"✏️ 체크아웃/공항 이동 등 마지막 날 일정을 입력하세요"}
+    ],
+    dayTodos:[],
+    places:[],
+    extraCosts:[], shoppingCosts:[]
+  }
+];
+
+// 각 Day 카드의 접힘/펼침 상태. render()가 다시 실행돼도 이 상태를 유지합니다.
+const dayCollapsedState = days.map(() => true);
+
+// 홋카이도 템플릿의 추천 장소 칩(chip) 데이터 자리 — 현재 render()에서는
+// 사용되지 않는 예비 필드입니다(구조적 동일성 유지를 위해 남겨둠).
+const suggestions = {};
+
+const timeline = document.getElementById('timeline');
+const saveEl = document.getElementById('save');
+let saveTimer;
+
+// Firebase Firestore가 있으면 실시간 동기화, 없으면(오프라인 등)
+// Claude 아티팩트의 window.storage 또는 localStorage로 자동 대체
+const storageAPI = {
+  async get(key, shared=false){
+    if(db){
+      try{
+        const snap = await db.collection('trip').doc(key).get();
+        if(snap.exists) return {key, value: snap.data().value, shared};
+        return null;
+      }catch(e){ console.error('firestore get failed', e); }
+    }
+    if(window.storage){ return window.storage.get(key, shared); }
+    try{
+      const v = localStorage.getItem(key);
+      return v !== null ? {key, value:v, shared} : null;
+    }catch(e){ return null; }
+  },
+  async set(key, value, shared=false){
+    if(db){
+      try{
+        await db.collection('trip').doc(key).set({value, updatedAt: Date.now()});
+        return {key, value, shared};
+      }catch(e){ console.error('firestore set failed', e); }
+    }
+    if(window.storage){ return window.storage.set(key, value, shared); }
+    try{
+      localStorage.setItem(key, value);
+      return {key, value, shared};
+    }catch(e){ return null; }
+  }
+};
+
+function flashSave(){
+  saveEl.classList.add('show');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>saveEl.classList.remove('show'),1200);
+}
+
+const ITINERARY_VERSION = 7;
+let daysLoaded = false; // Firestore 실시간 감지의 '첫 응답'이 오기 전까지는 저장을 막음
+
+async function persist(){
+  if(db && !daysLoaded){
+    const ok = await waitUntilLoaded(()=>daysLoaded);
+    if(!ok){ console.warn('일정 초기 데이터 확인 시간 초과 - 저장을 건너뜁니다.'); return; }
+  }
+  try{
+    await storageAPI.set('itinerary_days', JSON.stringify({version: ITINERARY_VERSION, days}), false);
+    flashSave();
+  }catch(e){ console.error('save failed', e); }
+}
+
+// 이 함수는 더 이상 '한 번 읽기'를 하지 않습니다. Firestore 사용 시에는
+// setupRealtimeSync()의 실시간 감지가 대신 초기 데이터를 채워줍니다.
+async function loadPersisted(){
+  if(db) return; // Firestore를 쓰는 경우 setupRealtimeSync에서 처리
+  try{
+    const res = await storageAPI.get('itinerary_days', false);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      if(parsed && Array.isArray(parsed.days) && parsed.days.length === days.length){
+        parsed.days.forEach((d,i)=>{
+          days[i].items = d.items;
+          if(Array.isArray(d.dayTodos)) days[i].dayTodos = d.dayTodos;
+          if(typeof d.date === 'string') days[i].date = d.date;
+          if(typeof d.loc === 'string') days[i].loc = d.loc;
+          if(days[i].hotel && d.hotel && d.hotel.cost != null){
+            days[i].hotel.cost = d.hotel.cost;
+            if(d.hotel.currency) days[i].hotel.currency = d.hotel.currency;
+            if(d.hotel.krwEquiv != null) days[i].hotel.krwEquiv = d.hotel.krwEquiv;
+            if(d.hotel.krwEquivDate) days[i].hotel.krwEquivDate = d.hotel.krwEquivDate;
+          }
+          if(Array.isArray(d.extraCosts)) days[i].extraCosts = d.extraCosts;
+          if(Array.isArray(d.shoppingCosts)) days[i].shoppingCosts = d.shoppingCosts;
+          if(Array.isArray(d.flights)){
+            d.flights.forEach((f,fi)=>{
+              if(days[i].flights[fi] && f.cost != null){
+                days[i].flights[fi].cost = f.cost;
+                if(f.currency) days[i].flights[fi].currency = f.currency;
+              }
+            });
+          }
+          if(days[i].car && d.car && d.car.cost != null){
+            days[i].car.cost = d.car.cost;
+            if(d.car.currency) days[i].car.currency = d.car.currency;
+          }
+        });
+      }
+    }
+  }catch(e){ /* no saved data yet */ }
+  daysLoaded = true;
+}
+
+function renderQuicknav(){
+  const nav = document.getElementById('quicknav');
+  nav.innerHTML = days.map(day =>
+    `<a href="#day-${day.num}" data-day="${day.num}">Day${day.num} ${day.loc.split(/[·→]/)[0].trim()}</a>`
+  ).join('');
+  nav.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const targetEl = document.querySelector(a.getAttribute('href'));
+      if(targetEl){
+        targetEl.classList.remove('collapsed');
+        const di = days.findIndex(d => 'day-' + d.num === targetEl.id);
+        if(di >= 0) dayCollapsedState[di] = false;
+      }
+    });
+  });
+}
+
+// 맨 위 히어로 영역의 이동 경로(출발지 → 다카마쓰 → ...)를 각 Day 카드의
+// '이동경로(day.loc)' 값으로부터 자동으로 만듭니다. Day의 loc을 연필 아이콘으로
+// 수정하면 이 함수가 다시 호출되면서 맨 위 경로도 함께 갱신됩니다.
+function renderHeroRoute(){
+  const routeEl = document.getElementById('hero-route');
+  if(!routeEl) return;
+  const stops = [];
+  days.forEach(day=>{
+    (day.loc || '').split(/[·→]/).map(s=>s.trim()).filter(Boolean).forEach(stop=>{
+      if(stops[stops.length-1] !== stop) stops.push(stop);
+    });
+  });
+  routeEl.innerHTML = stops.map((s,i)=>
+    `<span class="stop">${s}</span>` + (i < stops.length-1 ? `<span class="arrow">✈</span>` : '')
+  ).join('');
+}
+
+// 리스트 항목을 드래그해서 순서를 바꿀 수 있게 해주는 범용 함수.
+// listEl: <ul> 컨테이너. opts.getArray()가 반환하는 배열의 순서를 실제로 바꾼다.
+// opts.getIndex(li)는 그 li가 배열에서 몇 번째인지 알려주는 함수(체크리스트처럼
+// 카테고리별로 나뉘어 보여도, 실제 데이터 배열 상의 진짜 인덱스를 반환해야 함).
+function setupDragReorder(listEl, opts){
+  if(!listEl) return;
+  listEl.querySelectorAll(opts.handleSelector).forEach(handle=>{
+    handle.addEventListener('pointerdown', e=>{
+      e.preventDefault();
+      const li = handle.closest(opts.itemSelector);
+      if(!li) return;
+      const siblings = Array.from(listEl.querySelectorAll(opts.itemSelector));
+      const startPos = siblings.indexOf(li);
+      if(startPos < 0 || siblings.length < 2) return;
+      const itemHeight = li.getBoundingClientRect().height;
+      const startY = e.clientY;
+      let currentPos = startPos;
+
+      li.classList.add('dragging');
+      li.style.zIndex = 100;
+
+      function onMove(ev){
+        const dy = ev.clientY - startY;
+        li.style.transform = `translateY(${dy}px)`;
+        const rawDelta = Math.round(dy / itemHeight);
+        currentPos = Math.max(0, Math.min(siblings.length - 1, startPos + rawDelta));
+        siblings.forEach((el, idx)=>{
+          if(el === li) return;
+          let shift = 0;
+          if(startPos < currentPos && idx > startPos && idx <= currentPos) shift = -1;
+          else if(startPos > currentPos && idx < startPos && idx >= currentPos) shift = 1;
+          el.style.transition = 'transform .15s';
+          el.style.transform = shift ? `translateY(${shift * itemHeight}px)` : '';
+        });
+      }
+
+      function onUp(){
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', onUp);
+        siblings.forEach(el=>{ el.style.transform=''; el.style.transition=''; });
+        li.classList.remove('dragging');
+        li.style.zIndex='';
+
+        if(currentPos !== startPos){
+          const reordered = siblings.slice();
+          reordered.splice(startPos, 1);
+          reordered.splice(currentPos, 0, li);
+          const newOrderGlobalIdx = reordered.map(el => opts.getIndex(el));
+          const arr = opts.getArray();
+          const slotPositions = siblings.map(el => opts.getIndex(el)).sort((a,b)=>a-b);
+          const itemsInNewOrder = newOrderGlobalIdx.map(gi => arr[gi]);
+          slotPositions.forEach((slot, i)=>{ arr[slot] = itemsInNewOrder[i]; });
+          opts.afterReorder();
+        }
+      }
+
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp, {once:true});
+    });
+  });
+}
+
+function render(){
+  timeline.innerHTML = '';
+  days.forEach((day, di)=>{
+    const el = document.createElement('div');
+    el.className = 'day' + (dayCollapsedState[di] ? ' collapsed' : '');
+    el.id = 'day-' + day.num;
+
+    let flightsHtml = '';
+    let flightCostRowsHtml = '';
+    day.flights.forEach((f, fi)=>{
+      const fCur = f.currency || 'KRW';
+      const fCostBadge = (f.cost != null && f.cost !== '')
+        ? `<button class="flight-cost-btn" data-day="${di}" data-fi="${fi}">${formatCost(f.cost, fCur)}</button>`
+        : `<button class="flight-cost-btn" data-day="${di}" data-fi="${fi}">💰</button>`;
+      flightsHtml += `<div class="flight"><span class="badge">${f.badge}</span><span class="path">${f.path}</span><span class="time">${f.time}</span>${fCostBadge}</div>`;
+      flightCostRowsHtml += `<div class="flight-cost-row" data-day="${di}" data-fi="${fi}" hidden>
+        <input type="number" class="flight-cost-input" data-day="${di}" data-fi="${fi}" placeholder="항공권 비용" value="${f.cost!=null?f.cost:''}">
+        <button class="flight-cost-cur" data-day="${di}" data-fi="${fi}" data-cur="${fCur}">${fCur==='JPY'?'¥':'₩'}</button>
+      </div>`;
+    });
+
+    let hotelHtml = '';
+    let hotelCostRowHtml = '';
+    if(day.hotel){
+      const hMapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(day.hotel.name) + (day.hotel.pid ? '&query_place_id=' + day.hotel.pid : '');
+      const hCur = day.hotel.currency || 'KRW';
+      const hCostBadge = (day.hotel.cost != null && day.hotel.cost !== '')
+        ? `<button class="hotel-cost-btn" data-day="${di}">${formatCost(day.hotel.cost, hCur)}</button>`
+        : `<button class="hotel-cost-btn" data-day="${di}">💰 비용</button>`;
+      const hEquiv = (hCur === 'JPY' && day.hotel.krwEquiv != null)
+        ? `<div class="hotel-equiv">≈ ${formatCost(day.hotel.krwEquiv,'KRW')} 원화 환산 (${day.hotel.krwEquivDate||''} 기준)</div>` : '';
+      hotelHtml = `<div class="hotel-block"><span class="tag">숙소</span><div class="info"><b>${day.hotel.name}</b><span>${day.hotel.addr} · ${day.hotel.inout}</span>${hEquiv}</div>${hCostBadge}<a class="item-map-link" href="${hMapUrl}" target="_blank" rel="noopener" title="구글맵에서 보기">${day.hotel.pid?'📍':'🗺️'}</a></div>`;
+      hotelCostRowHtml = `<div class="hotel-cost-row" data-day="${di}" hidden>
+        <input type="number" class="hotel-cost-input" data-day="${di}" placeholder="숙소 비용" value="${day.hotel.cost!=null?day.hotel.cost:''}">
+        <button class="hotel-cost-cur" data-day="${di}" data-cur="${hCur}">${hCur==='JPY'?'¥':'₩'}</button>
+      </div>`;
+    }
+    let carHtml = '';
+    let carCostRowHtml = '';
+    if(day.car){
+      const cCur = day.car.currency || 'JPY';
+      const cCostBadge = (day.car.cost != null && day.car.cost !== '')
+        ? `<button class="car-cost-btn" data-day="${di}">${formatCost(day.car.cost, cCur)}</button>`
+        : `<button class="car-cost-btn" data-day="${di}">💰 비용</button>`;
+      carHtml = `<div class="car-block"><span class="tag">차량${day.car.event}</span><div class="info"><b>${day.car.co}</b><span>${day.car.place} · ${day.car.time}</span></div>${cCostBadge}</div>`;
+      carCostRowHtml = `<div class="car-cost-row" data-day="${di}" hidden>
+        <input type="number" class="car-cost-input" data-day="${di}" placeholder="렌터카 비용" value="${day.car.cost!=null?day.car.cost:''}">
+        <button class="car-cost-cur" data-day="${di}" data-cur="${cCur}">${cCur==='JPY'?'¥':'₩'}</button>
+      </div>`;
+    }
+
+    let itemsHtml = '';
+    day.items.forEach((it, ii)=>{
+      const costBadge = (it.cost != null && it.cost !== '')
+        ? `<button class="cost-badge" data-day="${di}" data-item="${ii}">${formatCost(it.cost, it.currency||'JPY')}</button>` : '';
+      const mapBadge = it.url
+        ? `<a class="map-badge" href="${it.url}" target="_blank" rel="noopener" title="구글맵에서 보기">📍</a>` : '';
+      itemsHtml += `<li class="item-row" data-item-idx="${ii}">
+        <div class="item-main">
+          <button class="drag-handle" title="드래그하여 순서 변경">⠿</button>
+          <span class="t" contenteditable="true" data-day="${di}" data-item="${ii}">${it.t}</span>
+          <span class="txt" contenteditable="true" data-day="${di}" data-item="${ii}">${it.x}</span>
+          ${costBadge}
+          ${mapBadge}
+          <button class="more-btn" data-day="${di}" data-item="${ii}" title="더보기">⋯</button>
+        </div>
+        <div class="item-more-row" hidden>
+          <button class="link-btn" data-day="${di}" data-item="${ii}">🔗 ${it.url?'링크 수정':'구글맵 링크 추가'}</button>
+          <button class="cost-btn" data-day="${di}" data-item="${ii}">💰 ${it.cost!=null?'비용 수정':'비용 추가'}</button>
+          <button class="del" data-day="${di}" data-item="${ii}">✕ 삭제</button>
+        </div>
+        <div class="item-link-row" hidden>
+          <input type="text" class="link-input" data-day="${di}" data-item="${ii}"
+            placeholder="구글맵에서 복사한 링크를 붙여넣기" value="${it.url ? it.url.replace(/"/g,'&quot;') : ''}">
+        </div>
+        <div class="item-cost-row" hidden>
+          <input type="number" class="cost-input" inputmode="numeric" data-day="${di}" data-item="${ii}" placeholder="금액 입력" value="${it.cost!=null?it.cost:''}">
+          <button class="cost-cur" data-day="${di}" data-item="${ii}" data-cur="${it.currency||'JPY'}">${(it.currency==='KRW')?'₩':'¥'}</button>
+        </div>
+      </li>`;
+    });
+
+    let dayTodoHtml = '';
+    (day.dayTodos || []).forEach((dt, ti)=>{
+      dayTodoHtml += `<li class="${dt.done?'done':''}">
+        <input type="checkbox" data-day="${di}" data-tidx="${ti}" ${dt.done?'checked':''}>
+        <span class="dtxt" contenteditable="true" data-day="${di}" data-tidx="${ti}">${dt.t}</span>
+        <button class="del-dt" data-day="${di}" data-tidx="${ti}" aria-label="삭제">✕</button>
+      </li>`;
+    });
+
+    el.innerHTML = `
+      <div class="day-head" data-toggle="${di}">
+        <span class="num-badge">${day.num}</span>
+        <div class="titles">
+          <h2>Day ${day.num} · <span class="day-date" data-day="${di}">${day.date}</span></h2>
+          <div class="loc day-loc" data-day="${di}">${day.loc}</div>
+        </div>
+        <button class="edit-head-btn" data-day="${di}" title="날짜/이동경로 수정">✏️</button>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="card">
+        ${flightsHtml}
+        ${flightCostRowsHtml}
+        ${hotelHtml}
+        ${hotelCostRowHtml}
+        ${carHtml}
+        ${carCostRowHtml}
+        <ul class="list">${itemsHtml}</ul>
+        <div class="add-row">
+          <input type="text" class="time-in" placeholder="시간" data-day="${di}">
+          <input type="text" class="name" placeholder="일정 추가... (장소명도 여기에)" data-day="${di}">
+          <button data-day="${di}" class="add-btn">추가</button>
+        </div>
+        <div class="day-todo">
+          <div class="day-todo-title">📌 이 날 해야 할 일</div>
+          <ul class="day-todo-list">${dayTodoHtml}</ul>
+          <div class="day-todo-add">
+            <input type="text" class="dt-new-input" placeholder="할 일 추가..." data-day="${di}">
+            <button class="dt-add-btn" data-day="${di}">추가</button>
+          </div>
+        </div>
+      </div>
+    `;
+    timeline.appendChild(el);
+
+    const listEl = el.querySelector('ul.list');
+    setupDragReorder(listEl, {
+      itemSelector: '.item-row',
+      handleSelector: '.drag-handle',
+      getIndex: liEl => +liEl.dataset.itemIdx,
+      getArray: () => day.items,
+      afterReorder: () => { persist(); render(); }
+    });
+  });
+
+  document.querySelectorAll('.day-head').forEach(el=>{
+    el.addEventListener('click', e=>{
+      if(e.target.closest('.day-date') || e.target.closest('.day-loc')) return;
+      const di = +el.dataset.toggle;
+      dayCollapsedState[di] = !dayCollapsedState[di];
+      el.closest('.day').classList.toggle('collapsed', dayCollapsedState[di]);
+    });
+  });
+
+  document.querySelectorAll('.edit-head-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const di = +e.currentTarget.dataset.day;
+      const dayEl = document.getElementById('day-' + days[di].num);
+      const dateEl = dayEl.querySelector('.day-date');
+      const locEl = dayEl.querySelector('.day-loc');
+      // 항상 편집 모드를 켭니다 (끄는 건 각 칸에서 포커스가 빠질 때 자동으로 처리돼요).
+      dateEl.setAttribute('contenteditable','true');
+      locEl.setAttribute('contenteditable','true');
+      dateEl.focus();
+    });
+  });
+  document.querySelectorAll('.day-date').forEach(el=>{
+    el.addEventListener('click', e=>{ if(el.getAttribute('contenteditable')==='true') e.stopPropagation(); });
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day;
+      days[d].date = e.target.textContent.trim();
+      e.target.removeAttribute('contenteditable');
+      persist();
+      renderQuicknav();
+      renderHeroRoute();
+    });
+  });
+  document.querySelectorAll('.day-loc').forEach(el=>{
+    el.addEventListener('click', e=>{ if(el.getAttribute('contenteditable')==='true') e.stopPropagation(); });
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day;
+      days[d].loc = e.target.textContent.trim();
+      e.target.removeAttribute('contenteditable');
+      persist();
+      renderQuicknav();
+      renderHeroRoute();
+    });
+  });
+
+  document.querySelectorAll('.txt').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day, i = +e.target.dataset.item;
+      days[d].items[i].x = e.target.textContent.trim();
+      persist();
+    });
+  });
+  document.querySelectorAll('.list .t').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day, i = +e.target.dataset.item;
+      days[d].items[i].t = e.target.textContent.trim();
+      persist();
+    });
+  });
+  document.querySelectorAll('.day-todo-list input[type=checkbox]').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const d = +e.target.dataset.day, ti = +e.target.dataset.tidx;
+      days[d].dayTodos[ti].done = e.target.checked;
+      persist();
+      render();
+    });
+  });
+  document.querySelectorAll('.dtxt').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day, ti = +e.target.dataset.tidx;
+      days[d].dayTodos[ti].t = e.target.textContent.trim();
+      persist();
+    });
+  });
+  document.querySelectorAll('.del-dt').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.currentTarget.dataset.day, ti = +e.currentTarget.dataset.tidx;
+      days[d].dayTodos.splice(ti,1);
+      persist();
+      render();
+    });
+  });
+  function addDayTodo(d){
+    const input = document.querySelector(`.dt-new-input[data-day="${d}"]`);
+    if(input.value.trim()){
+      if(!days[d].dayTodos) days[d].dayTodos = [];
+      days[d].dayTodos.push({t: input.value.trim(), done:false});
+      persist();
+      render();
+    }
+  }
+  document.querySelectorAll('.dt-add-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      addDayTodo(+e.currentTarget.dataset.day);
+    });
+  });
+  document.querySelectorAll('.dt-new-input').forEach(el=>{
+    el.addEventListener('keydown', e=>{
+      if(e.key === 'Enter'){ e.preventDefault(); addDayTodo(+e.target.dataset.day); }
+    });
+  });
+
+  document.querySelectorAll('.more-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const row = e.currentTarget.closest('.item-row').querySelector('.item-more-row');
+      const isHidden = row.hidden;
+      document.querySelectorAll('.item-more-row').forEach(r=>{ r.hidden = true; });
+      row.hidden = !isHidden;
+    });
+  });
+  document.querySelectorAll('.link-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      e.stopPropagation();
+      const itemRow = e.currentTarget.closest('.item-row');
+      itemRow.querySelector('.item-more-row').hidden = true;
+      const linkRow = itemRow.querySelector('.item-link-row');
+      linkRow.hidden = false;
+      linkRow.querySelector('.link-input').focus();
+    });
+  });
+  document.querySelectorAll('.link-input').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day, i = +e.target.dataset.item;
+      const val = e.target.value.trim();
+      if(val){
+        days[d].items[i].url = val;
+      } else {
+        delete days[d].items[i].url;
+      }
+      persist();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.del').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.target.dataset.day, i = +e.target.dataset.item;
+      days[d].items.splice(i,1);
+      persist();
+      render();
+    });
+  });
+  function addItem(row, d){
+    const timeIn = row.querySelector('.time-in');
+    const nameIn = row.querySelector('.name');
+    if(nameIn.value.trim()){
+      days[d].items.push({t: timeIn.value.trim() || '-', x: nameIn.value.trim()});
+      persist();
+      render();
+    }
+  }
+  document.querySelectorAll('.add-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.target.dataset.day;
+      const row = e.target.closest('.add-row');
+      addItem(row, d);
+    });
+  });
+  document.querySelectorAll('.add-row .time-in, .add-row .name').forEach(el=>{
+    el.addEventListener('keydown', e=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        const d = +e.target.dataset.day;
+        const row = e.target.closest('.add-row');
+        addItem(row, d);
+      }
+    });
+  });
+  document.querySelectorAll('.chip').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.currentTarget.dataset.day;
+      const place = e.currentTarget.dataset.place;
+      days[d].items.push({t:'-', x: place});
+      persist();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.cost-badge').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const itemRow = e.currentTarget.closest('.item-row');
+      const costRow = itemRow.querySelector('.item-cost-row');
+      costRow.hidden = false;
+      costRow.querySelector('.cost-input').focus();
+    });
+  });
+  document.querySelectorAll('.cost-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const itemRow = e.currentTarget.closest('.item-row');
+      itemRow.querySelector('.item-more-row').hidden = true;
+      const costRow = itemRow.querySelector('.item-cost-row');
+      costRow.hidden = false;
+      costRow.querySelector('.cost-input').focus();
+    });
+  });
+  document.querySelectorAll('.item-cost-row .cost-input').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day, i = +e.target.dataset.item;
+      const val = e.target.value.trim();
+      if(val !== ''){
+        days[d].items[i].cost = Number(val);
+        if(!days[d].items[i].currency) days[d].items[i].currency = 'JPY';
+      } else {
+        delete days[d].items[i].cost;
+      }
+      persist();
+      renderCostSummary();
+      // 통화(¥/₩) 버튼을 이어서 클릭할 시간을 준 뒤 화면을 정리합니다.
+      setTimeout(render, 200);
+    });
+  });
+  document.querySelectorAll('.item-cost-row .cost-cur').forEach(el=>{
+    el.addEventListener('mousedown', e=>{ e.preventDefault(); });
+    el.addEventListener('click', e=>{
+      const btn = e.currentTarget;
+      const d = +btn.dataset.day, i = +btn.dataset.item;
+      const next = btn.dataset.cur === 'JPY' ? 'KRW' : 'JPY';
+      btn.dataset.cur = next;
+      btn.textContent = next === 'JPY' ? '¥' : '₩';
+      days[d].items[i].currency = next;
+      persist();
+      // 여기서 화면을 다시 그리지 않습니다 - 그러면 방금 열어둔 금액 입력칸이
+      // 사라져서 금액을 마저 입력할 수 없게 됩니다. 금액 입력을 마치고
+      // 다른 곳을 탭하면(포커스 아웃) 그때 화면이 정리됩니다.
+    });
+  });
+  document.querySelectorAll('.hotel-cost-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.currentTarget.dataset.day;
+      const row = document.querySelector(`.hotel-cost-row[data-day="${d}"]`);
+      if(row){ row.hidden = false; row.querySelector('.hotel-cost-input').focus(); }
+    });
+  });
+  document.querySelectorAll('.hotel-cost-cur').forEach(el=>{
+    el.addEventListener('mousedown', e=>{ e.preventDefault(); });
+    el.addEventListener('click', e=>{
+      const btn = e.currentTarget;
+      const d = +btn.dataset.day;
+      const next = btn.dataset.cur === 'JPY' ? 'KRW' : 'JPY';
+      btn.dataset.cur = next;
+      btn.textContent = next === 'JPY' ? '¥' : '₩';
+      if(days[d].hotel) days[d].hotel.currency = next;
+    });
+  });
+  document.querySelectorAll('.hotel-cost-input').forEach(el=>{
+    el.addEventListener('blur', async e=>{
+      const d = +e.target.dataset.day;
+      const val = e.target.value.trim();
+      const row = e.target.closest('.hotel-cost-row');
+      const curBtn = row.querySelector('.hotel-cost-cur');
+      if(!days[d].hotel.currency) days[d].hotel.currency = curBtn.dataset.cur;
+      const cur = days[d].hotel.currency;
+      if(val !== ''){
+        days[d].hotel.cost = Number(val);
+        if(cur === 'JPY'){
+          const result = await fetchJpyToKrw(Number(val));
+          if(result){
+            days[d].hotel.krwEquiv = result.krw;
+            days[d].hotel.krwEquivDate = result.date;
+          } else {
+            delete days[d].hotel.krwEquiv;
+            delete days[d].hotel.krwEquivDate;
+          }
+        } else {
+          delete days[d].hotel.krwEquiv;
+          delete days[d].hotel.krwEquivDate;
+        }
+      } else {
+        delete days[d].hotel.cost;
+        delete days[d].hotel.currency;
+        delete days[d].hotel.krwEquiv;
+        delete days[d].hotel.krwEquivDate;
+      }
+      persist();
+      renderCostSummary();
+      setTimeout(render, 200);
+    });
+  });
+
+  document.querySelectorAll('.flight-cost-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.currentTarget.dataset.day, fi = +e.currentTarget.dataset.fi;
+      const row = document.querySelector(`.flight-cost-row[data-day="${d}"][data-fi="${fi}"]`);
+      if(row){ row.hidden = false; row.querySelector('.flight-cost-input').focus(); }
+    });
+  });
+  document.querySelectorAll('.flight-cost-cur').forEach(el=>{
+    el.addEventListener('mousedown', e=>{ e.preventDefault(); });
+    el.addEventListener('click', e=>{
+      const btn = e.currentTarget;
+      const d = +btn.dataset.day, fi = +btn.dataset.fi;
+      const next = btn.dataset.cur === 'JPY' ? 'KRW' : 'JPY';
+      btn.dataset.cur = next;
+      btn.textContent = next === 'JPY' ? '¥' : '₩';
+      if(days[d].flights[fi]) days[d].flights[fi].currency = next;
+    });
+  });
+  document.querySelectorAll('.flight-cost-input').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day, fi = +e.target.dataset.fi;
+      const val = e.target.value.trim();
+      const row = e.target.closest('.flight-cost-row');
+      if(!days[d].flights[fi].currency) days[d].flights[fi].currency = row.querySelector('.flight-cost-cur').dataset.cur;
+      if(val !== ''){
+        days[d].flights[fi].cost = Number(val);
+      } else {
+        delete days[d].flights[fi].cost;
+        delete days[d].flights[fi].currency;
+      }
+      persist();
+      renderCostSummary();
+      setTimeout(render, 200);
+    });
+  });
+
+  document.querySelectorAll('.car-cost-btn').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const d = +e.currentTarget.dataset.day;
+      const row = document.querySelector(`.car-cost-row[data-day="${d}"]`);
+      if(row){ row.hidden = false; row.querySelector('.car-cost-input').focus(); }
+    });
+  });
+  document.querySelectorAll('.car-cost-cur').forEach(el=>{
+    el.addEventListener('mousedown', e=>{ e.preventDefault(); });
+    el.addEventListener('click', e=>{
+      const btn = e.currentTarget;
+      const d = +btn.dataset.day;
+      const next = btn.dataset.cur === 'JPY' ? 'KRW' : 'JPY';
+      btn.dataset.cur = next;
+      btn.textContent = next === 'JPY' ? '¥' : '₩';
+      if(days[d].car) days[d].car.currency = next;
+    });
+  });
+  document.querySelectorAll('.car-cost-input').forEach(el=>{
+    el.addEventListener('blur', e=>{
+      const d = +e.target.dataset.day;
+      const val = e.target.value.trim();
+      const row = e.target.closest('.car-cost-row');
+      if(!days[d].car.currency) days[d].car.currency = row.querySelector('.car-cost-cur').dataset.cur;
+      if(val !== ''){
+        days[d].car.cost = Number(val);
+      } else {
+        delete days[d].car.cost;
+        delete days[d].car.currency;
+      }
+      persist();
+      renderCostSummary();
+      setTimeout(render, 200);
+    });
+  });
+
+  renderCostSummary();
+}
+
+function setupRealtimeSync(){
+  if(!db) return;
+
+  db.collection('trip').doc('itinerary_days').onSnapshot((snap)=>{
+    if(snap.exists){
+      try{
+        const parsed = JSON.parse(snap.data().value);
+        if(parsed && Array.isArray(parsed.days) && parsed.days.length === days.length){
+          const anyMenuOpen = !!document.querySelector('.item-more-row:not([hidden])');
+          const active = document.activeElement;
+          const isEditingField = !!(active && (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA'));
+          if(!anyMenuOpen && !isEditingField){
+            parsed.days.forEach((d,i)=>{
+              days[i].items = d.items;
+              if(Array.isArray(d.dayTodos)) days[i].dayTodos = d.dayTodos;
+              if(typeof d.date === 'string') days[i].date = d.date;
+              if(typeof d.loc === 'string') days[i].loc = d.loc;
+              if(days[i].hotel && d.hotel && d.hotel.cost != null){
+                days[i].hotel.cost = d.hotel.cost;
+                if(d.hotel.currency) days[i].hotel.currency = d.hotel.currency;
+                if(d.hotel.krwEquiv != null) days[i].hotel.krwEquiv = d.hotel.krwEquiv;
+                if(d.hotel.krwEquivDate) days[i].hotel.krwEquivDate = d.hotel.krwEquivDate;
+              }
+              if(Array.isArray(d.extraCosts)) days[i].extraCosts = d.extraCosts;
+              if(Array.isArray(d.shoppingCosts)) days[i].shoppingCosts = d.shoppingCosts;
+              if(Array.isArray(d.flights)){
+                d.flights.forEach((f,fi)=>{
+                  if(days[i].flights[fi] && f.cost != null){
+                    days[i].flights[fi].cost = f.cost;
+                    if(f.currency) days[i].flights[fi].currency = f.currency;
+                  }
+                });
+              }
+              if(days[i].car && d.car && d.car.cost != null){
+                days[i].car.cost = d.car.cost;
+                if(d.car.currency) days[i].car.currency = d.car.currency;
+              }
+            });
+            render();
+            renderQuicknav();
+            renderHeroRoute();
+          }
+        }
+      }catch(e){ /* ignore malformed remote data */ }
+    }
+    // 데이터가 아예 없거나(첫 사용) 형식이 안 맞아도, 서버 응답을 받았다는
+    // 사실 자체가 중요합니다 - 이제 저장(쓰기)을 해도 안전합니다.
+    daysLoaded = true;
+  });
+
+  db.collection('trip').doc('itinerary_todos').onSnapshot((snap)=>{
+    if(snap.exists){
+      try{
+        const parsed = JSON.parse(snap.data().value);
+        if(parsed && Array.isArray(parsed.items) && Array.isArray(parsed.categories)){
+          const active = document.activeElement;
+          const isEditingField = !!(active && (active.isContentEditable || active.tagName === 'INPUT' || active.tagName === 'TEXTAREA'));
+          if(!isEditingField){
+            todos = parsed.items;
+            todoCategories = parsed.categories;
+            renderTodos();
+          }
+        }
+      }catch(e){ /* ignore malformed remote data */ }
+    }
+    // 데이터가 아예 없거나(첫 사용) 형식이 안 맞아도, 서버 응답을 받았다는
+    // 사실 자체가 중요합니다 - 이제 저장(쓰기)을 해도 안전합니다.
+    todosLoaded = true;
+  });
+}
+
+document.addEventListener('click', ()=>{
+  document.querySelectorAll('.item-more-row').forEach(r=>{ r.hidden = true; });
+});
+
+(async ()=>{
+  await loadPersisted();
+  render();
+  renderQuicknav();
+  renderHeroRoute();
+  await loadTodos();
+  renderTodos();
+  setupRealtimeSync();
+})();
+</script>
+</body>
+</html>
