@@ -509,18 +509,15 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-// TODO: 다카마쓰용 새 Firebase 프로젝트를 만든 뒤 아래 값을 채워주세요.
-// (콘솔 > 프로젝트 설정 > 일반 > 내 앱 > SDK 설정 및 구성)
-// 비워둔 상태에서는 initializeApp이 실패해서 자동으로 로컬 저장(window.storage
-// 또는 localStorage)으로 대체되므로, 지금 당장은 정상적으로 동작합니다.
+// takamatsu-trip Firebase 프로젝트 설정
+// (Firestore 보안 규칙을 만료일 없는 규칙으로 바꿔뒀는지 꼭 확인하세요)
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: ""
+  apiKey: "AIzaSyCqPYowaeuKvK_c3TVMzh7xGZbzdZG2j2g",
+  authDomain: "takamatsu-trip.firebaseapp.com",
+  projectId: "takamatsu-trip",
+  storageBucket: "takamatsu-trip.firebasestorage.app",
+  messagingSenderId: "743887158082",
+  appId: "1:743887158082:web:9b4e035d474d752484a6db"
 };
 
 let db = null;
